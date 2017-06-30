@@ -9,9 +9,9 @@ import bwta.BWTA;
 import bwta.BaseLocation;
 import bwta.Chokepoint;
 
-/// 상황을 판단하여, 정찰, 빌드, 공격, 방어 등을 수행하도록 총괄 지휘를 하는 class
-/// InformationManager 에 있는 정보들로부터 상황을 판단하고, 
-/// BuildManager 의 buildQueue에 빌드 (건물 건설 / 유닛 훈련 / 테크 리서치 / 업그레이드) 명령을 입력합니다.
+/// 상황을 판단하여, 정찰, 빌드, 공격, 방어 등을 수행하도록 총괄 지휘를 하는 class <br>
+/// InformationManager 에 있는 정보들로부터 상황을 판단하고, <br>
+/// BuildManager 의 buildQueue에 빌드 (건물 건설 / 유닛 훈련 / 테크 리서치 / 업그레이드) 명령을 입력합니다.<br>
 /// 정찰, 빌드, 공격, 방어 등을 수행하는 코드가 들어가는 class
 public class StrategyManager {
 
@@ -55,62 +55,197 @@ public class StrategyManager {
 		executeBasicCombatUnitTraining();
 
 		executeCombat();
+		
+		
+		executeExpandHatchery();
+		
+		executeManageOverlords();
+	}
+
+	private void executeManageOverlords() {
+		if(MyBotModule.Broodwar.self().getRace() == Race.Zerg){
+			OverlordManager.Instance().update();
+		}
+	}
+
+	private void executeExpandHatchery() {
+		if(MyBotModule.Broodwar.self().getRace() == Race.Zerg){
+			
+		}
+		
 	}
 
 	public void setInitialBuildOrder() {
+		if (MyBotModule.Broodwar.self().getRace() == Race.Zerg) {
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Spawning_Pool,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Zergling,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Zergling,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Zergling,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Overlord,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
-		if (MyBotModule.Broodwar.self().getRace() == Race.Protoss) {
+			/*
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hatchery,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hatchery,
+					BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hatchery,
+					BuildOrderItem.SeedPositionStrategy.FirstExpansionLocation);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(
+					InformationManager.Instance().getBasicSupplyProviderUnitType(),
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			// 가스 익스트랙터
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Extractor,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
 
-			// SupplyUsed가 7 일때 파일런 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getBasicSupplyProviderUnitType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 성큰 콜로니
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Creep_Colony,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Sunken_Colony,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
 
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			BuildManager.Instance().buildQueue
+					.queueAsLowestPriority(InformationManager.Instance().getRefineryBuildingType());
 
-			// SupplyUsed가 8 일때 1번째 게이트웨이 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Gateway, BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 저글링 이동속도 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Metabolic_Boost);
+
+			// 에볼루션 챔버
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Evolution_Chamber);
+			// 에볼루션 챔버 . 지상유닛 업그레이드
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Zerg_Melee_Attacks, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Zerg_Missile_Attacks, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Zerg_Carapace, false);
+
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Drone);
 			
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			// 스포어 코로니
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Creep_Colony,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Spore_Colony,
+					BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
 
-			// SupplyUsed가 9 일때 가스 리파이너리 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getRefineryBuildingType());
+			// 히드라
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hydralisk_Den);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hydralisk);
 
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			// 레어
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Lair);
 
-			// SupplyUsed가 10 일때 사이버네틱스 코어 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Cybernetics_Core, BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 오버로드 운반가능
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Ventral_Sacs);
+			// 오버로드 시야 증가
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Antennae);
+			// 오버로드 속도 증가
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Pneumatized_Carapace);
 
-			// 1번째 질럿 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Zealot);
+			// 히드라 이동속도 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Muscular_Augments, false);
+			// 히드라 공격 사정거리 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Grooved_Spines, false);
 
-			// SupplyUsed가 12 일때 시타델 오브 아둔 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Citadel_of_Adun);
+			// 럴커
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Lurker_Aspect);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hydralisk);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Lurker);
+			
+			// 스파이어
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Spire, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Mutalisk, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Scourge, true);
 
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			// 스파이어 . 공중유닛 업그레이드
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Zerg_Flyer_Attacks, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Zerg_Flyer_Carapace, false);
 
-			// SupplyUsed가 14 일때 템플러 아카이브, 2번째 게이트웨이 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Templar_Archives);
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Gateway, BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 퀸
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Queens_Nest);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Queen);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Spawn_Broodlings, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Ensnare, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Gamete_Meiosis, false);
 
-			// 2번째 질럿 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Zealot);
+			// 하이브
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Hive);
+			// 저글링 공격 속도 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Adrenal_Glands, false);
 
-			// SupplyUsed가 16 일때 파일런 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getBasicSupplyProviderUnitType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 스파이어 . 그레이트 스파이어
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Greater_Spire, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Mutalisk, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Guardian, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Mutalisk, true);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Devourer, true);
 
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getWorkerType());
+			// 울트라리스크
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Ultralisk_Cavern);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Ultralisk);
+			// 울트라리스크 이동속도 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Anabolic_Synthesis, false);
+			// 울트라리스크 방어력 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Chitinous_Plating, false);
 
-			// 4마리 다크 템플러 빌드 후 파일런 빌드
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Dark_Templar);
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Dark_Templar);
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Dark_Templar);
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Protoss_Dark_Templar);
-			BuildManager.Instance().buildQueue.queueAsLowestPriority(InformationManager.Instance().getBasicSupplyProviderUnitType(), BuildOrderItem.SeedPositionStrategy.MainBaseLocation);
+			// 디파일러
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Defiler_Mound);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Defiler);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Consume, false);
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(TechType.Plague, false);
+			// 디파일러 에너지 업
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UpgradeType.Metasynaptic_Node, false);
 
+			// 나이더스 캐널
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Nydus_Canal);
+
+			// 참고로, Zerg_Nydus_Canal 건물로부터 Nydus Canal Exit를 만드는 방법은 다음과 같습니다
+			//if (MyBotModule.Broodwar.self().completedUnitCount(UnitType.Zerg_Nydus_Canal) > 0) {
+			//	for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
+			//		if (unit.getType() == UnitType.Zerg_Nydus_Canal) {
+			//			TilePosition targetTilePosition = new TilePosition(unit.getTilePosition().getX() + 6, unit.getTilePosition().getY()); // Creep 이 있는 곳이어야 한다
+			//			unit.build(UnitType.Zerg_Nydus_Canal, targetTilePosition);
+			//		}
+			//	}
+			//}
+
+			// 퀸 - 인페스티드 테란 : 테란 Terran_Command_Center 건물의 HitPoint가 낮을 때, 퀸을 들여보내서 Zerg_Infested_Command_Center 로 바꾸면, 그 건물에서 실행 됨
+			BuildManager.Instance().buildQueue.queueAsLowestPriority(UnitType.Zerg_Infested_Terran);
+			*/
 		}
 	}
 
@@ -124,7 +259,7 @@ public class StrategyManager {
 
 		if (MyBotModule.Broodwar.self().minerals() >= 50) {
 			// workerCount = 현재 일꾼 수 + 생산중인 일꾼 수
-			int workerCount = MyBotModule.Broodwar.self().allUnitCount(InformationManager.Instance().getWorkerType());
+			int workerCount = MyBotModule.Broodwar.self().allUnitCount(UnitType.Zerg_Drone);
 
 			if (MyBotModule.Broodwar.self().getRace() == Race.Zerg) {
 				for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
@@ -155,10 +290,10 @@ public class StrategyManager {
 						if (unit.isTraining() == false || unit.getLarva().size() > 0) {
 							// 빌드큐에 일꾼 생산이 1개는 있도록 한다
 							if (BuildManager.Instance().buildQueue
-									.getItemCount(InformationManager.Instance().getWorkerType(), null) == 0) {
+									.getItemCount(UnitType.Zerg_Drone, null) == 0) {
 								// std.cout << "worker enqueue" << std.endl;
 								BuildManager.Instance().buildQueue.queueAsLowestPriority(
-										new MetaType(InformationManager.Instance().getWorkerType()), false);
+										new MetaType(UnitType.Zerg_Drone), false);
 							}
 						}
 					}
@@ -167,7 +302,7 @@ public class StrategyManager {
 		}
 	}
 
-	// Supply DeadLock 예방 및 SupplyProvider 가 부족해질 상황 에 대한 선제적 대응으로서
+	// Supply DeadLock 예방 및 SupplyProvider 가 부족해질 상황 에 대한 선제적 대응으로서<br>
 	// SupplyProvider를 추가 건설/생산한다
 	public void executeSupplyManagement() {
 
@@ -209,32 +344,22 @@ public class StrategyManager {
 						}
 					}
 				}
-				// 저그 종족이 아닌 경우, 건설중인 Protoss_Pylon, Terran_Supply_Depot 를 센다. Nexus, Command Center 등 건물은 세지 않는다
-				else {
-					onBuildingSupplyCount += ConstructionManager.Instance().getConstructionQueueItemCount(
-							InformationManager.Instance().getBasicSupplyProviderUnitType(), null)
-							* InformationManager.Instance().getBasicSupplyProviderUnitType().supplyProvided();
-				}
-
-				//System.out.println("currentSupplyShortage : " + currentSupplyShortage + " onBuildingSupplyCount : " + onBuildingSupplyCount);
-
+				
 				if (currentSupplyShortage > onBuildingSupplyCount) {
-					
 					// BuildQueue 최상단에 SupplyProvider 가 있지 않으면 enqueue 한다
 					boolean isToEnqueue = true;
 					if (!BuildManager.Instance().buildQueue.isEmpty()) {
 						BuildOrderItem currentItem = BuildManager.Instance().buildQueue.getHighestPriorityItem();
 						if (currentItem.metaType.isUnit() 
-							&& currentItem.metaType.getUnitType() == InformationManager.Instance().getBasicSupplyProviderUnitType()) 
+							&& currentItem.metaType.getUnitType() == UnitType.Zerg_Overlord) 
 						{
 							isToEnqueue = false;
 						}
 					}
 					if (isToEnqueue) {
-						System.out.println("enqueue supply provider "
-								+ InformationManager.Instance().getBasicSupplyProviderUnitType());
+						System.out.println("enqueue supply provider "+ UnitType.Zerg_Overlord);
 						BuildManager.Instance().buildQueue.queueAsHighestPriority(
-								new MetaType(InformationManager.Instance().getBasicSupplyProviderUnitType()), true);
+								new MetaType( UnitType.Zerg_Overlord), true);
 					}
 				}
 			}
@@ -251,12 +376,12 @@ public class StrategyManager {
 		// 기본 병력 추가 훈련
 		if (MyBotModule.Broodwar.self().minerals() >= 200 && MyBotModule.Broodwar.self().supplyUsed() < 390) {
 			for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
-				if (unit.getType() == InformationManager.Instance().getBasicCombatBuildingType()) {
+				if (unit.getType() ==  UnitType.Zerg_Zergling) {
 					if (unit.isTraining() == false || unit.getLarva().size() > 0) {
 						if (BuildManager.Instance().buildQueue
-								.getItemCount(InformationManager.Instance().getBasicCombatUnitType(), null) == 0) {
+								.getItemCount(UnitType.Zerg_Zergling, null) == 0) {
 							BuildManager.Instance().buildQueue.queueAsLowestPriority(
-									InformationManager.Instance().getBasicCombatUnitType(),
+									UnitType.Zerg_Zergling,
 									BuildOrderItem.SeedPositionStrategy.MainBaseLocation, true);
 						}
 					}
@@ -272,13 +397,13 @@ public class StrategyManager {
 			Chokepoint firstChokePoint = BWTA.getNearestChokepoint(InformationManager.Instance().getMainBaseLocation(InformationManager.Instance().selfPlayer).getTilePosition());
 
 			for (Unit unit : MyBotModule.Broodwar.self().getUnits()) {
-				if (unit.getType() == InformationManager.Instance().getBasicCombatUnitType() && unit.isIdle()) {
+				if (unit.getType() == UnitType.Zerg_Zergling && unit.isIdle()) {
 					commandUtil.attackMove(unit, firstChokePoint.getCenter());
 				}
 			}
 
-			// Protoss_Dark_Templar 유닛이 2개 이상 생산되었고, 적군 위치가 파악되었으면 총공격 모드로 전환
-			if (MyBotModule.Broodwar.self().completedUnitCount(UnitType.Protoss_Dark_Templar) >= 2) {
+			// 전투 유닛이 2개 이상 생산되었고, 적군 위치가 파악되었으면 총공격 모드로 전환
+			if (MyBotModule.Broodwar.self().completedUnitCount(UnitType.Zerg_Zergling) > 2) {
 				if (InformationManager.Instance().enemyPlayer != null
 					&& InformationManager.Instance().enemyRace != Race.Unknown  
 					&& InformationManager.Instance().getOccupiedBaseLocations(InformationManager.Instance().enemyPlayer).size() > 0) {				
