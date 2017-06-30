@@ -474,7 +474,7 @@ public class ConstructionManager {
 				}
 
 				// Refinery 건물의 경우, 건물 지을 장소를 찾을 수 없게 되었거나, 건물 지을 수 있을거라고 판단했는데 이미 Refinery 가 지어져있는 경우, dead lock 
-				if (!isDeadlockCase && unitType == InformationManager.Instance().getRefineryBuildingType())
+				if (!isDeadlockCase && unitType ==  UnitType.Zerg_Extractor)
 				{
 					boolean hasAvailableGeyser = true;
 
