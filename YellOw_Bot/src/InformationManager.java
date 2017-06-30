@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -554,183 +555,15 @@ public class InformationManager {
 		return false;
 	}
 	
-	// 해당 종족의 UnitType 중 Basic Combat Unit 에 해당하는 UnitType을 리턴합니다
-	public UnitType getBasicCombatUnitType() {
-		return getBasicCombatUnitType(MyBotModule.Broodwar.self().getRace());
-	}
 
-	// 해당 종족의 UnitType 중 Basic Combat Unit 에 해당하는 UnitType을 리턴합니다
-	public UnitType getBasicCombatUnitType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Zealot;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Marine;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Zergling;
-		} else {
-			return UnitType.None;
+	public List<BaseLocation> getUnknownBaseLocations() {
+		List<BaseLocation> ret = new ArrayList<BaseLocation>();
+			for(BaseLocation startLocation : BWTA.getStartLocations()){
+			if (MyBotModule.Broodwar.isExplored(startLocation.getTilePosition()) == false){
+				ret.add(startLocation);
+			}
 		}
-	}
-
-	// 해당 종족의 UnitType 중 Advanced Combat Unit 에 해당하는 UnitType을 리턴합니다
-	public UnitType getAdvancedCombatUnitType() {
-		return getAdvancedCombatUnitType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Advanced Combat Unit 에 해당하는 UnitType을 리턴합니다
-	public UnitType getAdvancedCombatUnitType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Dragoon;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Medic;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Hydralisk;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Basic Combat Unit 을 생산하기 위해 건설해야하는 UnitType을 리턴합니다
-	public UnitType getBasicCombatBuildingType() {
-		return getBasicCombatBuildingType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Basic Combat Unit 을 생산하기 위해 건설해야하는 UnitType을 리턴합니다
-	public UnitType getBasicCombatBuildingType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Gateway;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Barracks;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Hatchery;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Observer 에 해당하는 UnitType을 리턴합니다
-	public UnitType getObserverUnitType() {
-		return getObserverUnitType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Observer 에 해당하는 UnitType을 리턴합니다
-	public UnitType getObserverUnitType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Observer;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Science_Vessel;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Overlord;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 ResourceDepot 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicResourceDepotBuildingType() {
-		return getBasicResourceDepotBuildingType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 ResourceDepot 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicResourceDepotBuildingType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Nexus;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Command_Center;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Hatchery;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Refinery 기능을 하는 UnitType을 리턴합니다
-	public UnitType getRefineryBuildingType() {
-		return getRefineryBuildingType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Refinery 기능을 하는 UnitType을 리턴합니다
-	public UnitType getRefineryBuildingType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Assimilator;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Refinery;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Extractor;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Worker 에 해당하는 UnitType을 리턴합니다
-	public UnitType getWorkerType() {
-		return getWorkerType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Worker 에 해당하는 UnitType을 리턴합니다
-	public UnitType getWorkerType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Probe;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_SCV;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Drone;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 SupplyProvider 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicSupplyProviderUnitType() {
-		return getBasicSupplyProviderUnitType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 SupplyProvider 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicSupplyProviderUnitType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Pylon;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Supply_Depot;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Overlord;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Basic Depense 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicDefenseBuildingType() {
-		return getBasicDefenseBuildingType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Basic Depense 기능을 하는 UnitType을 리턴합니다
-	public UnitType getBasicDefenseBuildingType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Pylon;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Bunker;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Creep_Colony;
-		} else {
-			return UnitType.None;
-		}
-	}
-
-	// 해당 종족의 UnitType 중 Advanced Depense 기능을 하는 UnitType을 리턴합니다
-	public UnitType getAdvancedDefenseBuildingType() {
-		return getAdvancedDefenseBuildingType(MyBotModule.Broodwar.self().getRace());
-	}
-
-	// 해당 종족의 UnitType 중 Advanced Depense 기능을 하는 UnitType을 리턴합니다
-	public UnitType getAdvancedDefenseBuildingType(Race race) {
-		if (race == Race.Protoss) {
-			return UnitType.Protoss_Photon_Cannon;
-		} else if (race == Race.Terran) {
-			return UnitType.Terran_Missile_Turret;
-		} else if (race == Race.Zerg) {
-			return UnitType.Zerg_Sunken_Colony;
-		} else {
-			return UnitType.None;
-		}
+		
+		return ret;
 	}
 }

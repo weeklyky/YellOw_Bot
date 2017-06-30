@@ -90,6 +90,8 @@ public class GameCommander {
 		// ResourceDepot 및 Worker 에 대한 처리
 		WorkerManager.Instance().onUnitDestroy(unit);
 
+		OverlordManager.Instance().onUnitDestroy(unit);
+
 		InformationManager.Instance().onUnitDestroy(unit); 
 	}
 	
@@ -100,6 +102,7 @@ public class GameCommander {
 
 		// Zerg 종족 Worker 의 Morph 에 대한 처리
 		WorkerManager.Instance().onUnitMorph(unit);
+		OverlordManager.Instance().onUnitMorph(unit);
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)의 소속 플레이어가 바뀔 때 발생하는 이벤트를 처리합니다<br>
@@ -134,6 +137,8 @@ public class GameCommander {
 
 		// ResourceDepot 및 Worker 에 대한 처리
 		WorkerManager.Instance().onUnitShow(unit);
+		
+		OverlordManager.Instance().onUnitShow(unit);
 	}
 
 	/// 유닛(건물/지상유닛/공중유닛)이 Hide 될 때 발생하는 이벤트를 처리합니다<br>
