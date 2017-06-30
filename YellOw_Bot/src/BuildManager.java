@@ -885,7 +885,7 @@ public class BuildManager {
 					}
 
 					// Refinery 건물의 경우, Refinery 가 건설되지 않은 Geyser가 있는 경우에만 가능
-					if (!isDeadlockCase && unitType == InformationManager.Instance().getRefineryBuildingType()) {
+					if (!isDeadlockCase && unitType == UnitType.Zerg_Extractor) {
 						boolean hasAvailableGeyser = true;
 
 						// Refinery가 지어질 수 있는 장소를 찾아본다
